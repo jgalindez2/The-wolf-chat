@@ -11,12 +11,14 @@ const { generateMessage, generateLocationMessage } = require('../server/utils/me
 io.on('connection', socket => {
   socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat'))
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'))
-  socket.on('createMessage', message => {
+  socket.on('createMessage', (message, callback) => {
     // io.emit emit for all the connections.
     io.emit('newMessage', generateMessage(message.from, message.text))
+    callback()
   })
-  socket.on('createLocationMessage', ({ latitude, longitude }) => {
+  socket.on('createLocationMessage', ({ latitude, longitude }, callback) => {
     io.emit('newLocationMessage', generateLocationMessage('Admin', latitude, longitude))
+    callback()
   })
   socket.on('disconnect', () => {
     console.log('User has been disconnected')

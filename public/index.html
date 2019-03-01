@@ -2,18 +2,27 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
-    <p>My Chat app</p>
-    <ol id="chat-list"></ol>
-    <form id="chat-form">
-      <input name="message" type="text" placeholder="New message">
-      <button type="submit">Send</button>
-    </form>
-    <button id="send-location">Send location</button>
-
+    <div class="chat">
+      <div class="chat__sidebar">
+        <h2>People</h2>
+      </div>
+      <div class="chat__box">
+        <div id="chat-list" class="chat__messages"></div>
+        <div class="chat__form-box">
+          <form id="chat-form" class="chat__form">
+            <input class="chat__input" name="message" type="text" placeholder="New message" autofocus autocomplete="off">
+            <button class="chat__button chat__button-submit" type="submit">Send</button>
+          </form>
+          <button class="chat__button chat__button-location" id="send-location">Send location</button>
+        </div>
+      </div>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="js/index.js"></script>
   </body>
 </html>
