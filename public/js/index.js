@@ -1,5 +1,18 @@
 var socket = io()
 
+function scrollToBottom () {
+  var messagesContainer = $('.chat__messages')
+  var newMessage = messagesContainer.children('div:last-child')
+  var scrollHeight = messagesContainer.prop('scrollHeight')
+  var scrollTop = messagesContainer.prop('scrollTop')
+  var clientHeight = messagesContainer.prop('clientHeight')
+  var newMessageHeight = newMessage.innerHeight()
+  var lastMessageHeight = newMessage.prev().innerHeight()
+  if (scrollTop + clientHeight + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    messagesContainer.animate({ scrollTop: scrollHeight }, 600)
+  }
+}
+
 socket.on('connect', function(){
   console.log('Server connected')
 })
@@ -10,16 +23,28 @@ socket.on('disconnect', function(){
 
 socket.on('newMessage', message => {
   const formatedTime = moment(message.createdAt).format('h:mm a')
-  var list = $('<p class="chat_message-p"></p>').text(`${message.from} ${formatedTime}: ${message.text}`)
-  $('#chat-list').append(list)
+  const newMessageTemplate = $('#new-message-template').html()
+  Mustache.parse(newMessageTemplate);
+  var rendered = Mustache.render(newMessageTemplate, {
+    from: message.from,
+    text: message.text,
+    createdAt: formatedTime
+  })
+  $('#chat-list').append(rendered)
+  scrollToBottom()
 })
 
 socket.on('newLocationMessage', message => {
   const formatedTime = moment(message.createdAt).format('h:mm a')
-  var list = $('<p class="chat_message-p"></p>').text(`${message.from} ${formatedTime}: `)
-  var link = $('<a target="_blank">See my location</a>').attr('href', message.url)
-  list.append(link)
-  $('#chat-list').append(list)
+  const newMessageTemplate = $('#new-message-template').html()
+  Mustache.parse(newMessageTemplate);
+  var rendered = Mustache.render(newMessageTemplate, {
+    from: message.from,
+    url: message.url,
+    createdAt: formatedTime
+  })
+  $('#chat-list').append(rendered)
+  scrollToBottom()
 })
 
 $('#chat-form').on('submit', function(e) {

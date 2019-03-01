@@ -20,9 +20,26 @@
         </div>
       </div>
     </div>
+    <script id="new-message-template" type="x-tmpl-mustache">
+      <div class="message">
+        <div class="message__title">
+          <h4>{{ from }}</h4>
+          <span>{{ createdAt }}</span>
+        </div>
+        {{#text}}
+          <div class="message__text">
+            <p class="chat_message-p">{{ text }}</p>
+          </div>
+        {{/text}}
+        {{#url}}
+          <a href="{{url}}" target="_blank">See my direction</a>
+        {{/url}}
+      </div>      
+    </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
     <script src="js/index.js"></script>
   </body>
 </html>
